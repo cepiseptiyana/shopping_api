@@ -2,6 +2,12 @@ const express = require("express");
 require("dotenv").config();
 const app = express();
 
+// izinkan semua origin
+app.use(cors());
+
+// atau hanya localhost saat development
+// app.use(cors({ origin: "http://localhost:5173" }));
+
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
