@@ -3,7 +3,7 @@ name: Continues Deployment To Vercel
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:

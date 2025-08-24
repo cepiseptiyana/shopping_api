@@ -3,7 +3,7 @@ name: Continues Integration To Main
 on:
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   my_first_job_build:
