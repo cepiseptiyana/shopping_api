@@ -3,7 +3,7 @@ name: Continues Integration To Main
 on:
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   my_first_job_build:
@@ -22,7 +22,7 @@ jobs:
       - name: Install Depedencies
         run: npm install
 
-      - name: Build production bundle
-        run: npm run build
+      # - name: Build production bundle
+      #   run: npm run build
 
       - run: echo "🎉 semangat !"

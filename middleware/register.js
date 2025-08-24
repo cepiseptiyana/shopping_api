@@ -32,7 +32,7 @@ module.exports.register = async (req, res) => {
         return res.status(400).json({ message: "Email sudah dipakai" });
     }
 
-    // Hash password
+    // Hashing password
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(password, salt);
 
