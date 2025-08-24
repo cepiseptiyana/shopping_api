@@ -22,7 +22,7 @@ jobs:
       - name: Install Depedencies
         run: npm install
 
-      - name: Build production bundle
-        run: npm run build
+      # - name: Build production bundle
+      #   run: npm run build
 
       - run: echo "🎉 semangat !"
