@@ -13,7 +13,7 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
 // middleware
-const { register } = require("./middleware/register.js");
+const { register } = require("../middleware/register.js");
 
 app.post("/register", register);
 
