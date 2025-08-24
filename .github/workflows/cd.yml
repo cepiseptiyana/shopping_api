@@ -1,4 +1,4 @@
-name: Continues Deployment To Vercel
+name: Deploy Express.js to Vercel
 
 on:
   push:
@@ -7,23 +7,26 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Production
+    name: Deploy to Vercel
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: setup node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: install depedencies
+      - name: Install dependencies
         run: npm install
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-
       - name: Deploy to Vercel
-        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        uses: amondnet/vercel-action@v22
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./ # path ke project kamu
+          prod: true
