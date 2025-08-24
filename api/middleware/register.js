@@ -45,7 +45,7 @@ module.exports.register = async (req, res) => {
     res.status(201).json({ message: "Horee, Created account" + username });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "error di server" });
+    return res.status(500).json({ error: err.message });
   } finally {
     // penting: selalu release connection biar balik ke pool
     connection.release();
