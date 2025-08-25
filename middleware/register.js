@@ -6,17 +6,17 @@ module.exports.register = async (req, res) => {
   const { username, email, password } = req.body;
   const connection = await pool.getConnection();
 
-  if (!username) {
-    return res.status(400).json({ message: "username wajib isi" });
-  }
+  // if (!username) {
+  //   return res.status(400).json({ message: "username wajib isi" });
+  // }
 
-  if (!email) {
-    return res.status(400).json({ message: "email wajib isi" });
-  }
+  // if (!email) {
+  //   return res.status(400).json({ message: "email wajib isi" });
+  // }
 
-  if (!password) {
-    return res.status(400).json({ message: "password wajib isi" });
-  }
+  // if (!password) {
+  //   return res.status(400).json({ message: "password wajib isi" });
+  // }
 
   try {
     const [rows] = await connection.query(
