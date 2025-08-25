@@ -7,9 +7,10 @@ app.use(cors());
 app.use(express.json());
 
 // middleware
-const { register } = require("./middleware/register.js");
+const { register, login } = require("./middleware/register.js");
 
 app.post("/register", register);
+app.post("/login", login);
 
 // app.listen(3000, (err) => {
 //   console.log("running server");

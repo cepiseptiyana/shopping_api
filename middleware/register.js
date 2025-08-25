@@ -51,3 +51,27 @@ module.exports.register = async (req, res) => {
     connection.release();
   }
 };
+
+module.exports.login = async (req, res) => {
+  const { email, password } = req.body;
+  const connection = await pool.getConnection();
+
+  try {
+    const [rows] = await connection.query(
+      "SELECT * FROM accounts WHERE email = ?",
+      [email]
+    );
+
+    if (rows.length > 0) {
+      const user = rows[0];
+      const compare = await bcrypt.compare(password, user.password);
+      if (!compare) return res.status(400).json({ message: "password salah" });
+      return res.status(200).json({ message: "login" });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "server error" + err });
+  } finally {
+    connection.release();
+  }
+};
