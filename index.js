@@ -9,7 +9,7 @@ app.use(express.json());
 // middleware
 const { register } = require("./middleware/register.js");
 
-app.post("/api/register", register);
+app.post("/register", register);
 
 // app.listen(3000, (err) => {
 //   console.log("running server");
