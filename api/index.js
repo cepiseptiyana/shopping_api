@@ -9,6 +9,6 @@ app.use(express.json());
 // middleware
 const { register } = require("./middleware/register.js");
 
-app.post("/api/register", register);
+app.post("/register", register);
 
 module.exports = app;
