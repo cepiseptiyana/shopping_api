@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const pool = require("../database/database.js");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -5,18 +6,6 @@ const saltRounds = 10;
 module.exports.register = async (req, res) => {
   const { username, email, password } = req.body;
   const connection = await pool.getConnection();
-
-  // if (!username) {
-  //   return res.status(400).json({ message: "username wajib isi" });
-  // }
-
-  // if (!email) {
-  //   return res.status(400).json({ message: "email wajib isi" });
-  // }
-
-  // if (!password) {
-  //   return res.status(400).json({ message: "password wajib isi" });
-  // }
 
   try {
     const [rows] = await connection.query(
@@ -65,7 +54,20 @@ module.exports.login = async (req, res) => {
     if (rows.length > 0) {
       const user = rows[0];
       const compare = await bcrypt.compare(password, user.password);
-      if (compare) return res.status(200).json({ message: user.username });
+      if (compare) {
+        // buat token JWT
+        const token = jwt.sign(
+          { id: user.id, email: user.email }, // payload (data yg mau dikirim)
+          process.env.JWT_SECRET, // secret key simpan di .env
+          { expiresIn: "1h" } // expired (misal 1 jam)
+        );
+
+        return res.status(200).json({
+          message: "login berhasil",
+          username: user.username,
+          token: token,
+        });
+      }
       return res.status(400).json({ message: "password salah" });
     }
 
