@@ -68,8 +68,9 @@ module.exports.login = async (req, res) => {
       if (!compare) return res.status(400).json({ message: "password salah" });
       return res.status(200).json({ message: "login" });
     }
+
+    return res.status(400).json({ message: "email atau password salah" });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ message: "server error" + err });
   } finally {
     connection.release();
