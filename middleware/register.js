@@ -65,7 +65,7 @@ module.exports.login = async (req, res) => {
     if (rows.length > 0) {
       const user = rows[0];
       const compare = await bcrypt.compare(password, user.password);
-      if (compare) return res.status(200).json({ message: "login" });
+      if (compare) return res.status(200).json({ message: user.username });
       return res.status(400).json({ message: "password salah" });
     }
 
