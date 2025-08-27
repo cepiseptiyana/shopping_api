@@ -64,7 +64,7 @@ module.exports.login = async (req, res) => {
 
         return res.status(200).json({
           message: "login berhasil",
-          user: user.id,
+          account_id: user.id,
           username: user.username,
           token: token,
         });
