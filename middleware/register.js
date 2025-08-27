@@ -64,6 +64,7 @@ module.exports.login = async (req, res) => {
 
         return res.status(200).json({
           message: "login berhasil",
+          user: user.id,
           username: user.username,
           token: token,
         });
@@ -77,4 +78,19 @@ module.exports.login = async (req, res) => {
   } finally {
     connection.release();
   }
+};
+
+module.exports.addCart = async (req, res) => {
+  const {
+    id_barang,
+    account_id,
+    name,
+    quantity,
+    price,
+    image,
+    size,
+    stock,
+    total_delivery,
+    type_delivery,
+  } = req.body;
 };
