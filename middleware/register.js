@@ -93,4 +93,120 @@ module.exports.addCart = async (req, res) => {
     total_delivery,
     type_delivery,
   } = req.body;
+
+  const connection = await pool.getConnection();
+
+  try {
+    const [rows] = await connection.query(
+      "SELECT * FROM items WHERE id_barang = ?",
+      [id_barang]
+    );
+
+    if (rows.length > 0) {
+      const items = rows[0];
+
+      if (size !== items.size || type_delivery !== items.type_delivery) {
+        await connection.query(
+          "INSERT INTO items (id_barang, account_id, name, quantity, price, image, size, stock, total_delivery, type_delivery) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          [
+            id_barang,
+            account_id,
+            name,
+            quantity,
+            price,
+            image,
+            size,
+            stock,
+            total_delivery,
+            type_delivery,
+          ]
+        );
+
+        return res.status(200).json({ message: "Added to cart successfully!" });
+      }
+
+      if (quantity !== items.quantity) {
+        await connection.query(
+          "UPDATE items SET quantity = ? WHERE id_barang = ? AND account_id = ?",
+          [quantity, id_barang, account_id]
+        );
+        return res.status(200).json({ message: "Quantity diperbarui" });
+      }
+    }
+
+    await connection.query(
+      "INSERT INTO items (id_barang, account_id, name, quantity, price, image, size, stock, total_delivery, type_delivery) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        id_barang,
+        account_id,
+        name,
+        quantity,
+        price,
+        image,
+        size,
+        stock,
+        total_delivery,
+        type_delivery,
+      ]
+    );
+
+    res.status(200).json({ message: "Added to cart successfully!" });
+  } catch (err) {
+    console.log("ada error: " + err);
+    return res.status(500).json({ message: "ada server error" + err });
+  } finally {
+    connection.release();
+  }
+};
+
+module.exports.getItems = async (req, res) => {
+  const { account_id } = req.body;
+  const connection = await pool.getConnection();
+
+  try {
+    const [rows] = await connection.query(
+      "SELECT * FROM items WHERE account_id = ?",
+      [account_id]
+    );
+
+    if (rows.length > 0) {
+      // rows[0] hanya akan mengabil satu data
+      // const item = rows[0];
+      return res.status(200).json({ success: true, data: rows });
+    }
+
+    res.status(400).json({ success: false, data: [] });
+  } catch (err) {
+    console.log("ada error: " + err);
+    return res
+      .status(500)
+      .json({ success: false, message: "ada server error" + err });
+  } finally {
+    connection.release();
+  }
+};
+
+module.exports.updateQuantity = async (req, res) => {
+  const { id, quantity, account_id } = req.body;
+  const connection = await pool.getConnection();
+
+  try {
+    const [result] = await connection.query(
+      "UPDATE items SET quantity = ? WHERE id = ? AND account_id = ?",
+      [quantity, id, account_id]
+    );
+
+    if (result.affectedRows > 0) {
+      return res.status(200).json({ message: "success update" });
+    }
+
+    return res
+      .status(400)
+      .json({ message: "gagal update / data tidak ditemukan" });
+  } catch (err) {
+    console.error("ada error: " + err);
+    return res.status(500).json({ message: "ada server error: " + err });
+  } finally {
+    connection.release();
+  }
 };
